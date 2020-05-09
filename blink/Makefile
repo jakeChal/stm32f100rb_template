@@ -74,7 +74,7 @@ libtinyprintf:
 # helper targets
 
 flash: firmware.bin
-	$(STFLASH) write v1 firmware.bin 0x8000000
+	$(STFLASH) write firmware.bin 0x8000000
 
 gdb-server:
 	$(STUTIL) --stlinkv1
