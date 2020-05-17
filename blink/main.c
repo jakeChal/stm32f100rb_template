@@ -35,12 +35,12 @@ int main(void)
         GPIO_WriteBit(GPIOC, GPIO_Pin_8, Bit_SET);
         GPIO_WriteBit(GPIOC, GPIO_Pin_9, Bit_RESET);
 
-        Delay(250);
+        Delay(1000);
 
         GPIO_WriteBit(GPIOC, GPIO_Pin_8, Bit_RESET);
         GPIO_WriteBit(GPIOC, GPIO_Pin_9, Bit_SET);
 
-        Delay(250);
+        Delay(1000);
     }
 }
 

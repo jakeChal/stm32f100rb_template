@@ -35,7 +35,7 @@ void GPIO_Configuration(void)
     /* GPIOC Configuration: LED3/LED4 Output Push-Pull */
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
 
     GPIO_Init(GPIOC, &GPIO_InitStructure);
 
