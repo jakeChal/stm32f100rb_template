@@ -7,8 +7,7 @@
 ###############################################################################
 
 OBJS  = main.o 
-OBJS += stm32f10x_it.o 
-OBJS += stm32f10x_misc.o 
+OBJS += stm32f10x_init.o
 
 ###############################################################################
 
@@ -32,9 +31,6 @@ export CFLAGS=-O1 -g -c -fno-common -mcpu=cortex-m3 -mthumb
 STFLASH=st-flash
 STUTIL=st-util
 
-# libtinyprintf
-LDFLAGS += -L$(ROOT)/lib/tinyprintf
-CFLAGS += -I$(ROOT)/lib/tinyprintf
 
 # libstm32f10x
 LDFLAGS += -L$(ROOT)/lib/stm32f10x
@@ -57,7 +53,7 @@ all: firmware.bin
 firmware: $(OBJS)
 
 firmware.elf: firmware libstm32f10x libtinyprintf
-	$(LD) $(LDFLAGS) $(ASFLAGS) -o $@ $(OBJS) $(STARTUP) -lstm32f10x -ltinyprintf
+	$(LD) $(LDFLAGS) $(ASFLAGS) -o $@ $(OBJS) $(STARTUP) -lstm32f10x
 
 firmware.bin: firmware.elf
 	$(OBJCOPY) -O binary $< $@
