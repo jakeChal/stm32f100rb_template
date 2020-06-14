@@ -49,8 +49,8 @@
 #define LCD_RS_PORT  (GPIOB)
 #define LCD_RS_PORT_RCC  (RCC_APB2Periph_GPIOB)
 
-#define TIME_DELAY_BEFORE_ENABLE (400000)
-#define TIME_DELAY_BEFORE_DISABLE (800000)
+#define TIME_DELAY_BEFORE_ENABLE (400)
+#define TIME_DELAY_BEFORE_DISABLE (800)
 
 void RCC_Configuration();
 void GPIO_Configuration();
@@ -147,7 +147,7 @@ void lcd_set_to_read() {
     send_bit_to_port_and_pin(LCD_RW_PORT, LCD_RW_PIN, 1);
 }
 
-void lcd_command_mode() {
+void lcd_instruction_mode() {
     send_bit_to_port_and_pin(LCD_RS_PORT, LCD_RS_PIN, 0);
 }
 
@@ -173,6 +173,14 @@ void lcd_send_byte(char character) {
 void lcd_send_char(char character) {
     lcd_set_to_write();
     lcd_character_mode();
+    lcd_enable();
+
+    lcd_send_byte(character);
+}
+
+void lcd_send_instruction(char character) {
+    lcd_set_to_write();
+    lcd_instruction_mode();
     lcd_enable();
 
     lcd_send_byte(character);

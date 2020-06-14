@@ -6,15 +6,27 @@ int main(void)
 
     STM32_Configuration();
 
-    // Send a character (byte) "A" 0100 0001 to port C and D pin
-    char letter = 'A';
+    lcd_send_instruction(0b00000001);   // Clear display (Table 13 in datasheet)
 
-    for (int i = 0; i < 30; i++) {
-        lcd_send_char('A'+i);
-    }
+    lcd_send_instruction(0b00111000);   // Sets to 8-bit operation and selects 2-line 
+                                        // display and 5 × 8dot character font
 
-    send_bit_to_port_and_pin(LCD_RW_PORT, LCD_RW_PIN, 1);
-    send_bit_to_port_and_pin(LCD_RS_PORT, LCD_RS_PIN, 1);
+    lcd_send_instruction(0b00001110);   // Turns on display and cursor.
+
+    lcd_send_instruction(0b00000110);   // Sets mode to increment theaddress by one and to shift the
+                                        // cursor to the right at the time of write to the DD/CGRAM.
+
+    lcd_send_char('H');
+    lcd_send_char('E');
+    lcd_send_char('L');
+    lcd_send_char('L');
+    lcd_send_char('O');
+    lcd_send_char('!');
+
+    lcd_send_instruction(0b11000000);   // Sets DDRAM address so thatthe cursor is positioned at the
+                                        // head of the second line
+
+
 
     while (1) {
 
