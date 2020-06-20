@@ -3,6 +3,7 @@
 
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_rcc.h"
+#include "printf.h"
 
 #define LCD_D0_PIN  (GPIO_Pin_6)
 #define LCD_D0_PORT  (GPIOC)
@@ -49,8 +50,8 @@
 #define LCD_RS_PORT  (GPIOB)
 #define LCD_RS_PORT_RCC  (RCC_APB2Periph_GPIOB)
 
-#define TIME_DELAY_BEFORE_ENABLE (400)
-#define TIME_DELAY_BEFORE_DISABLE (800)
+#define TIME_DELAY_BEFORE_ENABLE (4000)
+#define TIME_DELAY_BEFORE_DISABLE (8000)
 
 void RCC_Configuration();
 void GPIO_Configuration();
@@ -184,5 +185,36 @@ void lcd_send_instruction(char character) {
     lcd_enable();
 
     lcd_send_byte(character);
+}
+
+void lcd_send_string(char *str) {
+
+    while (*str)
+        lcd_send_char(*str++);
+}
+
+
+void lcd_send_int(int a, uint8_t len) {
+
+    char num2str[len];
+    sprintf(num2str, "%d", a);
+
+    lcd_send_string(num2str);
+}
+
+void lcd_send_float(float a, uint8_t len) {
+
+    // shitty workaround ... 
+    // TODO: use a libc with float support for printfs
+    char num2str[len];
+    int int_part = (int) a;
+    int frac_part = (int) ((a - int_part) * 1e3f);
+
+    sprintf(num2str, "%d", int_part);
+    lcd_send_string(num2str);
+
+    lcd_send_string(".");
+    sprintf(num2str, "%d", frac_part);
+    lcd_send_string(num2str);
 }
 #endif
