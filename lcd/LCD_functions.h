@@ -217,4 +217,9 @@ void lcd_send_float(float a, uint8_t len) {
     sprintf(num2str, "%d", frac_part);
     lcd_send_string(num2str);
 }
+
+void lcd_set_cursor_location_20_4(uint8_t x, uint8_t y) {
+    uint8_t row_offset[4] = {0x0, 0x40, 0x14, 0x54};
+    lcd_send_instruction(0b10000000 + y + row_offset[x]);
+}
 #endif
