@@ -4,7 +4,7 @@
 int main(void)
 {
 
-    STM32_Configuration();
+    LCD_Configuration();
 
     // Memory map for 20x4 HD44780 here: http://web.alfredstate.edu/faculty/weimandn/lcd/lcd_addressing/lcd_addressing_index.html
 

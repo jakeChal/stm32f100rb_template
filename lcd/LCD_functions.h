@@ -56,7 +56,6 @@
 void RCC_Configuration();
 void GPIO_Configuration();
 
-
 void not_exact_time_delay(int delay) {
     volatile int i = 0;
 
@@ -64,7 +63,7 @@ void not_exact_time_delay(int delay) {
 
     }
 }
-void STM32_Configuration(void)
+void LCD_Configuration(void)
 {
     /* System Clocks Configuration */
     RCC_Configuration();
