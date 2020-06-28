@@ -43,7 +43,7 @@ CFLAGS += -I$(ROOT)/lib/stm32f10x/inc/core
 CFLAGS += -I$(ROOT)/lib/stm32f10x/inc/peripherals
 CFLAGS += -DSTM32F10X_MD_VL=1 -DUSE_STDPERIPH_DRIVER=1
 
-# LCD stuff
+# liblcd
 CFLAGS += -I$(ROOT)/lcd
 LDFLAGS += -L$(ROOT)/lcd
 
@@ -76,7 +76,6 @@ libtinyprintf:
 
 liblcd:
 	$(MAKE) -C ../lcd/ liblcd.a
-
 # helper targets
 
 flash: firmware.bin

@@ -9,6 +9,7 @@
 OBJS  = main.o 
 OBJS += stm32f10x_it.o 
 OBJS += stm32f10x_misc.o 
+OBJS += LCD_functions.o 
 
 ###############################################################################
 
@@ -94,9 +95,17 @@ iterate:
 clean:
 	rm -f firmware.elf firmware.bin
 	rm -f $(OBJS)
+	rm -f liblcd.a
 
 clean_all:
 	$(MAKE) -C ../lib/stm32f10x clean
 	$(MAKE) -C ../lib/tinyprintf clean
 	rm -f firmware.elf firmware.bin
+	rm -f liblcd.a
 	rm -f $(OBJS)
+
+LCD_functions.o: LCD_functions.c
+
+liblcd.a: LCD_functions.o
+	$(AR) rcs $@ $<
+	
