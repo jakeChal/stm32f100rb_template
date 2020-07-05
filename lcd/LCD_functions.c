@@ -1,5 +1,6 @@
 #include "LCD_functions.h"
 
+#define PRECISION_POINTS (10) // 1 decimal point
 
 void not_exact_time_delay(int delay) {
     volatile int i = 0;
@@ -15,6 +16,16 @@ void LCD_Configuration(void)
 
     /* GPIO Configuration */
     GPIO_Configuration();
+
+    lcd_send_instruction(0b00000001); // Clear display (Table 13 in datasheet)
+
+    lcd_send_instruction(0b00111000);   // Sets to 8-bit operation and selects 2-line 
+                                        // display and 5 × 8dot character font
+
+    lcd_send_instruction(0b00001110);   // Turns on display and cursor.
+
+    lcd_send_instruction(0b00000110);   // Sets mode to increment the address by one and to shift the
+                                        // cursor to the right at the time of write to the DD/CGRAM.
 
 }
 
@@ -137,8 +148,8 @@ void lcd_send_string(char *str) {
         lcd_send_char(*str++);
 }
 
-
-void lcd_send_int(int a, uint8_t len) {
+void lcd_send_int(int a, uint8_t len)
+{
 
     char num2str[len];
     sprintf(num2str, "%d", a);
@@ -151,15 +162,15 @@ void lcd_send_float(float a, uint8_t len) {
     // shitty workaround ... 
     // TODO: use a libc with float support for printfs
     char num2str[len];
-    int int_part = (int) a;
-    int frac_part = (int) ((a - int_part) * 1e3f);
+    int integer_part = (int) a;
+    int decimal_part = ((int)(a * PRECISION_POINTS) % PRECISION_POINTS);
 
-    sprintf(num2str, "%d", int_part);
+    sprintf(num2str, "%d", integer_part);
     lcd_send_string(num2str);
 
-    lcd_send_string(".");
-    sprintf(num2str, "%d", frac_part);
+    sprintf(num2str, ".%d", decimal_part);
     lcd_send_string(num2str);
+
 }
 
 void lcd_set_cursor_location_20_4(uint8_t x, uint8_t y) {

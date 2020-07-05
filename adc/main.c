@@ -1,4 +1,5 @@
 #include "stm32f10x.h"
+#include "stm32f10x_init.h"
 
 uint16_t AD_value;
 
@@ -11,27 +12,7 @@ int main(void)
 {
     STM32_Configuration();
 
-
-    //////////////// ADC configuration ///////////////////
-    ADC_InitTypeDef ADC_InitStructure;
-    ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
-    ADC_InitStructure.ADC_ScanConvMode = ENABLE;
-    ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
-    ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
-    ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-    ADC_InitStructure.ADC_NbrOfChannel = 1;
-    ADC_Init(ADC1, &ADC_InitStructure);
-
-    //wake up temperature sensor
-    ADC_TempSensorVrefintCmd(ENABLE);
-    /* ADC1 regular channel14 configuration */ 
-    ADC_RegularChannelConfig(ADC1, ADC_Channel_16, 1, ADC_SampleTime_41Cycles5);
-
-    //////////////// ADC enable ///////////////////
-    ADC_Cmd(ADC1, ENABLE);
-
     //////////////// ADC calibration ///////////////////
-    lcd_send_instruction(0b00000001);   // Clear display (Table 13 in datasheet)
     lcd_set_cursor_location_20_4(0, 0);
     lcd_send_string("Starting calibration");
     not_exact_time_delay(50000);
@@ -41,7 +22,7 @@ int main(void)
     /* Check the end of ADC1 reset calibration register */
     while(ADC_GetResetCalibrationStatus(ADC1));
 
-    /* Start ADC1 calibaration */
+    /* Start ADC1 calibration */
     ADC_StartCalibration(ADC1);
     /* Check the end of ADC1 calibration */
     while(ADC_GetCalibrationStatus(ADC1));

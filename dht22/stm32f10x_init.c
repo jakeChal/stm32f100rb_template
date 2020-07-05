@@ -31,7 +31,5 @@ void Timers_Configuration()
 void STM32_Configuration(void)
 {
     LCD_Configuration();
-    lcd_send_instruction(0b00000001); // Clear display (Table 13 in datasheet)
-
     Timers_Configuration();
 }
