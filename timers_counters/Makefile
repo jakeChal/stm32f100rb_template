@@ -31,6 +31,7 @@ export CFLAGS=-O1 -g -c -fno-common -mcpu=cortex-m3 -mthumb
 # flash utils
 STFLASH=st-flash
 STUTIL=st-util
+OPENOCD=openocd
 
 # libtinyprintf
 LDFLAGS += -L$(ROOT)/lib/tinyprintf
@@ -78,8 +79,11 @@ liblcd:
 	$(MAKE) -C ../lcd/ liblcd.a
 # helper targets
 
-flash: firmware.bin
-	$(STFLASH) write firmware.bin 0x8000000
+# flash: firmware.bin
+# 	$(STFLASH) write firmware.bin 0x8000000
+
+flash: firmware.elf
+	$(OPENOCD) -f $(ROOT)/openocd/stm32vldiscovery.cfg -c 'program firmware.elf verify reset exit'
 
 gdb-server:
 	$(STUTIL) --stlinkv1
