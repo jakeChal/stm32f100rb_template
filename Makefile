@@ -4,6 +4,7 @@ clean_all:
 	$(MAKE) -C ./gpio_input/ clean_all
 	$(MAKE) -C ./interrupts/ clean_all
 	$(MAKE) -C ./uart_test/ clean_all
+	$(MAKE) -C ./uart_interrupts/ clean_all
 	$(MAKE) -C ./blink/ clean_all
 	$(MAKE) -C ./timers_counters/ clean_all
 	$(MAKE) -C ./dht22/ clean_all
