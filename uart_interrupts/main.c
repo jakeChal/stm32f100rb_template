@@ -12,8 +12,10 @@
 #include "printf.h"
 
 // #define UART_POLLING
+#define countof(a) (sizeof(a) / sizeof(*(a)))
 
 char data[2000];
+#define data_size (countof(data))
 
 void USART1_IRQHandler(void)
 {
@@ -23,12 +25,13 @@ void USART1_IRQHandler(void)
 
     USART_SendData(USART1, (uint16_t)data[counter++]);
 
-    if (counter >= (sizeof(data) - 1))
+    if(counter == data_size)
     {
+      /* Clear the USART1 Transmit interrupt */
+      USART_ClearITPendingBit(USART1, USART_IT_TC);
       counter = 0;
     }
 
-    USART_ClearITPendingBit(USART1, USART_IT_TC);
   }
 }
 
@@ -41,9 +44,7 @@ int main(void)
   USART_ITConfig(USART1, USART_IT_TXE, DISABLE);
 #endif
 
-  unsigned int len = sizeof(data);
-
-  for (unsigned i = 0; i < len; i++)
+  for (unsigned i = 0; i < data_size; i++)
   {
     data[i] = 'x';
   }
@@ -53,7 +54,7 @@ int main(void)
     GPIO_ToggleBit(GPIOC, GPIO_Pin_9);
     Delay(250);
 
-    // If wer were to use polling, then the data is transmitted using blocking mode
+    // If we were to use polling, then the data is transmitted using blocking mode
     // i.e the CPU will block  every other operation until the data transfer is complete.
     // Check that blinking rate decreases dramatically for big buffers!
 
