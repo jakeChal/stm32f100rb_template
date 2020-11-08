@@ -18,7 +18,7 @@ void DMA1_Channel4_IRQHandler(void)
   /* Test on DMA1 Channel4 Transfer Complete interrupt */
   if (DMA_GetITStatus(DMA1_IT_TC4))
   {
-    /* Clear DMA1 Channel6 Half Transfer, Transfer Complete and Global interrupt pending bits */
+    /* Clear DMA1 Channel4 Transfer Complete interrupt pending bit */
     DMA_ClearITPendingBit(DMA1_IT_TC4);
   }
   GPIO_ToggleBit(GPIOC, GPIO_Pin_8);
